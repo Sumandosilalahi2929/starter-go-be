@@ -3,7 +3,8 @@
 // It establishes a connection to a MySQL database using GORM, configures the connection pool,
 // and performs automatic migrations for the Contact model.
 //
-
+// Author: Tri Wicaksono
+// Website: https://triwicaksono.com
 package config
 
 import (
@@ -34,8 +35,8 @@ var DB *gorm.DB
 // If any step fails, the function will panic with an appropriate error message.
 func InitDB() {
 	// Retrieve database configuration from environment variables with default values.
-	dbUser := GetEnv("DB_USER", "root")
-	dbPassword := GetEnv("DB_PASSWORD", "")
+	dbUser := GetEnv("DB_USER", "user")
+	dbPassword := GetEnv("DB_PASSWORD", "password")
 	dbHost := GetEnv("DB_HOST", "db")
 	dbPort := GetEnv("DB_PORT", "3306")
 	dbName := GetEnv("DB_NAME", "contactsdb")

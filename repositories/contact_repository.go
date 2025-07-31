@@ -48,7 +48,7 @@ func (r *contactRepository) Create(contact *models.Contact) error {
 // It returns a slice of contacts and an error if the operation fails.
 func (r *contactRepository) FindAll() ([]models.Contact, error) {
 	var contacts []models.Contact
-	err := r.db.Where("deleted_at = ?", "0000-00-00 00:00:00").Find(&contacts).Error
+	err := r.db.Where("deleted_at IS NULL").Find(&contacts).Error
 	return contacts, err
 }
 
@@ -56,7 +56,7 @@ func (r *contactRepository) FindAll() ([]models.Contact, error) {
 // It returns the contact and an error if the contact is not found or the operation fails.
 func (r *contactRepository) FindByID(id uint) (*models.Contact, error) {
 	var contact models.Contact
-	err := r.db.Where("id = ? AND deleted_at = ?", id, "0000-00-00 00:00:00").First(&contact).Error
+	err := r.db.Where("id = ? AND deleted_at IS NULL", id).First(&contact).Error
 	return &contact, err
 }
 
@@ -69,6 +69,9 @@ func (r *contactRepository) Update(contact *models.Contact) error {
 // Delete marks a contact as deleted in the database by setting the DeletedAt field.
 // It returns an error if the operation fails.
 func (r *contactRepository) Delete(contact *models.Contact) error {
-	contact.DeletedAt = time.Now()
+	contact.DeletedAt = gorm.DeletedAt{
+		Time:  time.Now(),
+		Valid: true,
+	}
 	return r.db.Save(contact).Error
 }

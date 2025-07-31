@@ -10,6 +10,7 @@ package models
 
 import (
 	"time"
+	"gorm.io/gorm"
 )
 
 // Contact represents a contact message submitted through the API.
@@ -37,7 +38,8 @@ type Contact struct {
 
 	// DeletedAt records the timestamp when the contact message was deleted.
 	// This field is indexed to optimize deletion queries.
-	DeletedAt time.Time `gorm:"column:deleted_at;type:DATETIME;index"`
+	// DeletedAt time.Time `gorm:"column:deleted_at;type:DATETIME;index"` // error
+	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at;type:DATETIME;index"`
 }
 
 // TableName specifies the table name for the Contact model in the database.
